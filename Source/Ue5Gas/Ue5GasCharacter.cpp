@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "AbilitySystemComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AUe5GasCharacter
@@ -46,9 +47,30 @@ AUe5GasCharacter::AUe5GasCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+	
+	PrimaryActorTick.bCanEverTick = true;
+	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
+}
 
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+void AUe5GasCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	if(AbilitySystemComponent != nullptr)
+	{
+		if(PreloadedAbilities.Num() > 0)
+		{
+			for(auto i =0;i < PreloadedAbilities.Num(); i++)
+			{
+				if(PreloadedAbilities[i] != nullptr)
+				{
+					AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(PreloadedAbilities[i].GetDefaultObject(),1,0));
+				}
+			}
+
+		}
+
+		AbilitySystemComponent->InitAbilityActorInfo(this,this);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -126,4 +148,9 @@ void AUe5GasCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+UAbilitySystemComponent* AUe5GasCharacter::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
 }

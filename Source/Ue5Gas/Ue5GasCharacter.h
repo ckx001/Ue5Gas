@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
 #include "Ue5GasCharacter.generated.h"
 
 UCLASS(config=Game)
@@ -20,13 +21,21 @@ class AUe5GasCharacter : public ACharacter
 	class UCameraComponent* FollowCamera;
 public:
 	AUe5GasCharacter();
-
+	virtual void BeginPlay() override;
+	
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Input)
 	float TurnRateGamepad;
 
 protected:
-
+	
+	////////////////////////
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Character Abilities")
+	class UAbilitySystemComponent* AbilitySystemComponent;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Character Abilities")
+	TArray<TSubclassOf<class UGameplayAbility>> PreloadedAbilities;
+	////////////////////////
+	///
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);
 
@@ -61,5 +70,7 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const;
 };
 
