@@ -40,7 +40,7 @@ public class GasPlug : ModuleRules
 				"SlateCore",
 				"GameplayAbilities", 
 				"GameplayTags", 
-				"GameplayTasks"
+				"GameplayTasks",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

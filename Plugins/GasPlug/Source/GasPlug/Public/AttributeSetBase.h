@@ -14,13 +14,12 @@ GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 UCLASS()
-class UAttributeSetBase : public UAttributeSet
+class GASPLUG_API UAttributeSetBase : public UAttributeSet
 {
 	GENERATED_BODY()
-
-	public:
+	
 	UAttributeSetBase();
-
+public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	// Health and MaxHealth

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+#include "AttributeSetBase.h"
 #include "CharacterBase.generated.h"
 
 UCLASS()
@@ -25,8 +26,7 @@ protected:
 	class UAbilitySystemComponent* AbilitySystemComponent;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Character Abilities")
 	TArray<TSubclassOf<class UGameplayAbility>> PreloadedAbilities;
-	////////////////////////
-	///
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -35,4 +35,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Properties")
+	class UAttributeSetBase* attributeComponent;
 };
