@@ -8,6 +8,6 @@ public class Ue5Gas : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "GasPlug","GameplayAbilities","GameplayTasks" ,"GameplayTags" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "GasPlug","GameplayAbilities","GameplayTasks" ,"GameplayTags","UMG" });
 	}
 }

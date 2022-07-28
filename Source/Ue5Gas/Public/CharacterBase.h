@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
 #include "AttributeSetBase.h"
+#include "Components/Widget.h"
+#include "Components/WidgetComponent.h"
 #include "CharacterBase.generated.h"
 
 UCLASS()
@@ -21,12 +23,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
-	////////////////////////
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Character Abilities")
 	class UAbilitySystemComponent* AbilitySystemComponent;
+
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Character Abilities")
 	TArray<TSubclassOf<class UGameplayAbility>> PreloadedAbilities;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Widget")
+	class UWidgetComponent* Widget;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -38,4 +42,8 @@ public:
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Properties")
 	class UAttributeSetBase* attributeComponent;
+
+	UFUNCTION(BlueprintCallable)
+	void RefreshHp(float Percent);
+
 };

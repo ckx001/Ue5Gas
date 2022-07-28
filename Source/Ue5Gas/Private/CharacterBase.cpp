@@ -3,6 +3,8 @@
 
 #include "CharacterBase.h"
 #include "AbilitySystemComponent.h"
+#include "UnrealWidgetFwd.h"
+#include "Components/ProgressBar.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase()
@@ -11,6 +13,8 @@ ACharacterBase::ACharacterBase()
 	PrimaryActorTick.bCanEverTick = true;
 	attributeComponent = CreateDefaultSubobject<UAttributeSetBase>(TEXT("attributeComponent"));
 	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
+	Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComponent"));
+	Widget->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -33,6 +37,14 @@ void ACharacterBase::BeginPlay()
 
 		AbilitySystemComponent->InitAbilityActorInfo(this,this);
 	}
+
+	//Init Widget
+	auto InfoWidegetClass = LoadClass<UUserWidget>(NULL, TEXT("WidgetBlueprint'/Game/Characters/WBP_PlyaerStatus.WBP_PlyaerStatus_C'"));
+	Widget->SetWidgetClass(InfoWidegetClass);
+	Widget->SetWidgetSpace(EWidgetSpace::Screen);
+	Widget->SetPivot(FVector2D(1, 0.5));
+	Widget->SetDrawSize(FVector2D(120.0f, 10.0f));
+	Widget->SetRelativeLocation(FVector(0.0f, 0.0f, 95.0f));
 }
 
 // Called every frame
@@ -52,4 +64,14 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 UAbilitySystemComponent* ACharacterBase::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
+}
+
+void ACharacterBase::RefreshHp(float Percent)
+{
+	UUserWidget* InfoWidget = Widget->GetUserWidgetObject();
+	if (InfoWidget) {
+		auto ProgressBar = Cast<UProgressBar>(InfoWidget->GetWidgetFromName(TEXT("PB_HP")));
+		if (ProgressBar)
+			ProgressBar->SetPercent(Percent);
+	}
 }
