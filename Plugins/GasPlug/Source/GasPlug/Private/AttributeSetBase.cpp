@@ -63,60 +63,14 @@ void UAttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 	if (Data.EvaluatedData.Attribute == GetAckAttribute())
 	{
-	//	AActor* SourceActor = nullptr;
-	//	AController* SourceController = nullptr;
-	//	ARPGCharacterBase* SourceCharacter = nullptr;
-	//	if (Source && Source->AbilityActorInfo.IsValid() && Source->AbilityActorInfo->AvatarActor.IsValid())
-	//	{
-	//		SourceActor = Source->AbilityActorInfo->AvatarActor.Get();
-	//		SourceController = Source->AbilityActorInfo->PlayerController.Get();
-	//		if (SourceController == nullptr && SourceActor != nullptr)
-	//		{
-	//			if (APawn* Pawn = Cast<APawn>(SourceActor))
-	//			{
-	//				SourceController = Pawn->GetController();
-	//			}
-	//}
-	//		if (SourceController)
-	//		{
-	//			SourceCharacter = Cast<ARPGCharacterBase>(SourceController->GetPawn());
-	//		}
-	//		else
-	//		{
-	//			SourceCharacter = Cast<ARPGCharacterBase>(SourceActor);
-	//		}
 
-	//		// Set the causer actor based on context if it's set
-	//		if (Context.GetEffectCauser())
-	//		{
-	//			SourceActor = Context.GetEffectCauser();
-	//		}
-	//	}
-
-	//	// Try to extract a hit result
-	//	FHitResult HitResult;
-	//	if (Context.GetHitResult())
-	//	{
-	//		HitResult = *Context.GetHitResult();
-	//	}
-
-	//	// Store a local copy of the amount of damage done and clear the damage attribute
 	    const float LocalDamageDone = GetAck();
-	    SetAck(0.f);
+	    //SetAck(0.f);
 	    if (LocalDamageDone > 0)
 	    {
 	        const float OldHealth = GetHealth();
 	        SetHealth(FMath::Clamp(OldHealth - LocalDamageDone, 0.0f, GetMaxHealth()));
 	    	onHealthChangeDelegate.Broadcast(Health.GetBaseValue(),MaxHealth.GetCurrentValue());
-
-	//		if (TargetCharacter)
-	//		{
-	//			// This is proper damage
-	//			TargetCharacter->HandleDamage(LocalDamageDone, HitResult, SourceTags, SourceCharacter, SourceActor);
-
-	//			// Call for all health changes
-	//			TargetCharacter->HandleHealthChanged(-LocalDamageDone, SourceTags);
-	//		}
 	    }
 	}
 	else if (Data.EvaluatedData.Attribute == GetHealthAttribute())

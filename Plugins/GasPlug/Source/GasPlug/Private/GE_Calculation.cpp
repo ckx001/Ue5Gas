@@ -49,9 +49,13 @@ void UGE_Calculation::Execute_Implementation(const FGameplayEffectCustomExecutio
 	EvaluationParameters.SourceTags = SourceTags;
 	EvaluationParameters.TargetTags = TargetTags;
 	
-	float Damage = 10.0f;
+	float Damage = 0.0f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().AckDef, EvaluationParameters, Damage);
 
-	float DamageDone = 10.0f;
-	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(DamageStatics().AckProperty, EGameplayModOp::Additive, DamageDone));
+	float DamageDone = Damage;
+	if(DamageDone > 0.f)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("AAAAAA=%f"),DamageDone);
+	    OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(DamageStatics().AckProperty, EGameplayModOp::Additive, DamageDone));
+	}
 }
