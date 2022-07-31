@@ -18,6 +18,7 @@ void UAttributeSetBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributeSetBase, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributeSetBase, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributeSetBase, Ack, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UAttributeSetBase, Armor, COND_None, REPNOTIFY_Always);
 }
 
 void UAttributeSetBase::OnRep_Health(const FGameplayAttributeData& OldHealth)
@@ -33,6 +34,11 @@ void UAttributeSetBase::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHeal
 void UAttributeSetBase::OnRep_Ack(const FGameplayAttributeData& OldAck)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttributeSetBase, Ack, OldAck);
+}
+
+void UAttributeSetBase::OnRep_Armor(const FGameplayAttributeData& OldArmor)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttributeSetBase, Armor, OldArmor);
 }
 
 void UAttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)

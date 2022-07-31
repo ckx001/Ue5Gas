@@ -46,8 +46,16 @@ public:
 	UFUNCTION()
 	virtual void OnRep_Ack(const FGameplayAttributeData& OldAck);
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Abilities", ReplicatedUsing = OnRep_Armor)
+	FGameplayAttributeData Armor;
+	ATTRIBUTE_ACCESSORS(UAttributeSetBase, Armor);
+	
+	UFUNCTION()
+	virtual void OnRep_Armor(const FGameplayAttributeData& OldArmor);
+	
 	UPROPERTY(BlueprintReadOnly, BlueprintAssignable)
 	FHealthDelegate onHealthChangeDelegate;
 	
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+	
 };

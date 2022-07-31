@@ -5,11 +5,12 @@
 struct GDDamageStatics
 {
 	DECLARE_ATTRIBUTE_CAPTUREDEF(Ack);
+	DECLARE_ATTRIBUTE_CAPTUREDEF(Armor);
 
 	GDDamageStatics()
 	{
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UAttributeSetBase, Ack, Source, true);
-		
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UAttributeSetBase, Armor, Source, true);
 	}
 };
 
@@ -22,6 +23,7 @@ static const GDDamageStatics& DamageStatics()
 UGE_Calculation::UGE_Calculation()
 {
 	RelevantAttributesToCapture.Add(DamageStatics().AckDef);
+	RelevantAttributesToCapture.Add(DamageStatics().ArmorDef);
 }
 
 void UGE_Calculation::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams, FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
@@ -49,10 +51,13 @@ void UGE_Calculation::Execute_Implementation(const FGameplayEffectCustomExecutio
 	EvaluationParameters.SourceTags = SourceTags;
 	EvaluationParameters.TargetTags = TargetTags;
 	
-	float Damage = 0.0f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().AckDef, EvaluationParameters, Damage);
+	float Ack = 0.0f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().AckDef, EvaluationParameters, Ack);
 
-	float DamageDone = Damage;
+	float Armor = 0.0f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorDef, EvaluationParameters, Armor);
+	
+	float DamageDone = Ack - Armor;
 	if(DamageDone > 0.f)
 	{
 		UE_LOG(LogTemp,Warning,TEXT("AAAAAA=%f"),DamageDone);
