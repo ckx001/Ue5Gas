@@ -19,6 +19,7 @@ void UAttributeSetBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributeSetBase, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributeSetBase, Ack, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributeSetBase, Armor, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UAttributeSetBase, AckPercent, COND_None, REPNOTIFY_Always);
 }
 
 void UAttributeSetBase::OnRep_Health(const FGameplayAttributeData& OldHealth)
@@ -39,6 +40,11 @@ void UAttributeSetBase::OnRep_Ack(const FGameplayAttributeData& OldAck)
 void UAttributeSetBase::OnRep_Armor(const FGameplayAttributeData& OldArmor)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttributeSetBase, Armor, OldArmor);
+}
+
+void UAttributeSetBase::OnRep_AckPercent(const FGameplayAttributeData& OldAckPercent)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttributeSetBase, AckPercent, OldAckPercent);
 }
 
 void UAttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -69,12 +75,13 @@ void UAttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 	if (Data.EvaluatedData.Attribute == GetAckAttribute())
 	{
-
-	    const float LocalDamageDone = GetAck();
+		float LocalDamageDone = 0.0f;
+	    LocalDamageDone = GetDamage();
 	    //SetAck(0.f);
 	    if (LocalDamageDone > 0)
 	    {
 	        const float OldHealth = GetHealth();
+	    	//UE_LOG(LogTemp,Warning,TEXT("FFFFFFFFF=%f"),LocalDamageDone);
 	        SetHealth(FMath::Clamp(OldHealth - LocalDamageDone, 0.0f, GetMaxHealth()));
 	    	onHealthChangeDelegate.Broadcast(Health.GetBaseValue(),MaxHealth.GetCurrentValue());
 	    }

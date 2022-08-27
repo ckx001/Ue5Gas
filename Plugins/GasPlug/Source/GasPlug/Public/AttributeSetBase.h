@@ -52,6 +52,17 @@ public:
 	
 	UFUNCTION()
 	virtual void OnRep_Armor(const FGameplayAttributeData& OldArmor);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Abilities", ReplicatedUsing = OnRep_AckPercent)
+	FGameplayAttributeData AckPercent;
+	ATTRIBUTE_ACCESSORS(UAttributeSetBase, AckPercent);
+	
+	UFUNCTION()
+	virtual void OnRep_AckPercent(const FGameplayAttributeData& OldAckPercent);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Abilities")
+	FGameplayAttributeData Damage;
+	ATTRIBUTE_ACCESSORS(UAttributeSetBase, Damage);
 	
 	UPROPERTY(BlueprintReadOnly, BlueprintAssignable)
 	FHealthDelegate onHealthChangeDelegate;
